@@ -1,0 +1,121 @@
+
+<!doctype html>
+<html>
+	<head>
+		<title>Tile Map Editor</title>
+		<meta charset="utf-8" />
+	</head>
+<style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+      #maze {
+        
+        background-color:#E0E0E0;
+      }
+    </style>
+		<canvas id="maze" width="300" height="300">Your browser does not support HTML5 Canvas.</canvas>
+		<script>
+    canvas = document.getElementById('maze');
+    C = canvas.getContext('2d');
+      var tiles = new Image();  
+     tiles.src = "tiles.png";
+window.onload = function() {
+
+var newX = 0;
+var newY = 0;
+var activeTile = 0;
+var f=0;
+C.fillStyle = '#fffd00';
+drawPointer();
+
+canvas.addEventListener("mousedown", onImgClick, false);
+
+function addSource(){
+    document.getElementById("myText").value = 
+    "map = [" + "\n" +
+    "[" + map[0] + "]," + "\n" +
+    "[" + map[1] + "]," + "\n" +
+    "[" + map[2] + "]," + "\n" +
+    "[" + map[3] + "]," + "\n" +
+    "[" + map[4] + "]," + "\n" +
+    "[" + map[5] + "]," + "\n" +
+    "[" + map[6] + "]," + "\n" +
+    "[" + map[7] + "]," + "\n" +
+    "[" + map[8] + "]," + "\n" +
+    "[" + map[9] + "]" + "\n" +
+    "];";
+}
+
+function clearPointer(){
+ C.clearRect(16+f, 245, 16, 6);
+}
+function drawPointer(){
+ C.fillRect(16+f, 245, 16, 6);
+}
+
+ function onImgClick(event){
+//click on tiles
+  if(event.pageY > 176){
+for(var k=0; k<17; k++){
+  if(event.pageX <= 32+(k*17) && event.pageX > 16+(k*17) ){
+    if(event.pageY <= 244 && event.pageY > 228){
+      clearPointer();
+   activeTile = k;
+   f=k*17;
+         drawPointer();
+        }
+      }
+    }
+  }
+
+//click on map grid
+  if(event.pageY <= 176){
+    for(var l=0;l<10;l++){
+      if(event.pageY > 16+(l*16) && event.pageY <= 32+(l*16) && event.pageX > 16 && event.pageX <= 176){newY=l;}
+    }
+    for(var j=0;j<10;j++){
+      if(event.pageX > 16+(j*16) && event.pageX <= 32+(j*16) && event.pageY > 16 && event.pageY <= 176){newX=j;}
+    }
+      map[newY][newX] = activeTile;
+      drawMap();
+      addSource();
+   }
+}
+
+// 10x10 map array
+var map = [
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0]
+];
+
+function drawMap(){
+for(var x=0;x<map.length;x++){
+  for(var y=0;y<map.length;y++){
+    for(var z=0;z<16;z++){
+     if(map[y][x] == z){C.drawImage(tiles, 0+(16*map[y][x]), 0, 16, 16, 16+(16*x), 16+(16*y), 16, 16);}
+      }
+    }
+  }
+}
+ drawMap();
+
+//draw tileset
+for(var t=0;t<16;t++){
+  C.drawImage(tiles, 0+(16*t), 0, 16, 16, 16+(17*t), 228, 16, 16);
+ }
+
+};
+		</script>
+    <p><textarea type='text' id='myText' cols="40" rows="12"></textarea></p>
+	</body>
+</html>
